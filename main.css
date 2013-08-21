@@ -1,0 +1,343 @@
+﻿@font-face { font-family: Cursif; src: url('Cursive-bold.ttf'); }
+
+body {
+  font-family: 'Open Sans', Arial, helvetica, sans-serif;
+  /* font-size: 10pt; */
+  margin: 20px;
+  margin-top: 5px;
+}
+
+H1 {
+  font-size: 20pt; 
+  font-family: 'Lobster Two', Cursif, Cursive, fantasy; 
+  font-weight: normal; 
+  margin-bottom:0
+}
+
+H2 {
+  font-family: 'Lobster Two', Arial, sans-serif; 
+  font-weight: bold; 
+  font-size: 14pt;
+}
+
+H4 {
+  margin-bottom: 5px;
+}
+
+/* menu */
+
+/*#nav {
+  margin:0;
+  padding: 2px;
+  width: 100%;
+  height: 19px;
+  text-align: center;
+  border-bottom: solid 2px #030;
+}
+
+#nav li {
+  display:inline;
+  padding: 12px;
+  margin:0;
+  height: 19px;
+  float: left;
+}
+
+#nav a:link, #nav a:visited
+{
+  color: #000;
+  background: #FFF; 
+  padding: 5px;
+  width: auto;
+  border: 2px solid #003300;
+  text-decoration: none;
+  font: bold 12pt 'Lobster Two', Arial, Helvetica, sans-serif; 
+
+  border-radius: 5px;
+  min-width: 100px;
+}
+
+#nav a:hover, #nav a:focus
+{
+  color: #fff;
+  background-color: #99FF99;
+}*/
+
+
+/*.accueil #nav-accueil a, .classes #nav-classes a,
+.eleves #nav-eleves a,  .contacts #nav-contacts a,
+.fichiers #nav-fichiers a, .admin #nav-admin a 
+{
+  background: #00CE67; 
+  color:#fff;
+}
+
+.accueil #nav-accueil a:hover, .classes #nav-classes a:hover,
+.eleves #nav-eleves a:hover, .contacts #nav-contacts a:hover,
+.fichiers #nav-fichiers a:hover, .admin #nav-admin a:hover
+{
+  background: #ccc;
+}
+
+#nav a:active 
+{
+  color:#fff;
+}
+
+#nav .dropdown dd 
+{
+  position:absolute; 
+  overflow:hidden; 
+  width:150px; 
+  background:#fff; 
+  margin-top: 3px;
+  z-index:200; 
+  border: 2px solid #003300;
+  border-radius: 5px;
+  min-width: 100px;
+}
+
+#nav dl.dropdown {
+    margin-top: 7px;
+}
+
+#nav .dropdown li {
+  height: 15px;
+  display: block;
+  float: none;
+  text-align: left;
+}
+
+dl#nav-admin > dd > ul > li > a.sub-menu {
+  border: none;
+  background-color: transparent;
+  color: #003300;
+  float: none;
+}
+
+dl#nav-admin > dd > ul {
+  padding-left: 0px;
+}*/
+
+
+/* Family Search box */
+div.FamilySearch
+{
+  margin: 5px;
+  padding: 5px;
+  border: 2px solid #336600;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #eee;
+}
+
+.FamilySearch label
+{
+  min-width: 250px;
+  padding-right: 20px;
+  display: inline;
+  vertical-align: middle;
+}
+
+.FamilySearch input 
+{
+  vertical-align: text-top;
+}
+
+.form-horizontal > .control-group > * {
+  padding-top: 0;
+}
+
+/* Family form styles */
+.FamilyForm {
+  margin: 5px;
+  box-shadow: 2px 2px 2px #eee;
+  box-shadow: 10px 10px 20px #000;
+}
+
+.FamilyForm .Pager {
+  background-color: #1C5E55;
+  color: White;
+}
+
+.FamilyForm .Header {
+  background-color: #1C5E55;
+}
+
+.FamilyForm h2 {
+  font-family: 'Open Sans', Arial, helvetica;
+}
+
+/* General form */
+td.TDLabels {
+  width: 110px;
+}
+
+
+.TDLabels, label.control-label {
+  font-weight: bold;
+  vertical-align: top;
+  min-width: 150px;
+}
+
+
+
+.TDValue {
+  vertical-align: top;
+  margin-left: 10px;
+  min-width: 150px;
+}
+
+.autre-contact {
+  color: #999;
+}
+
+.NotesBox {
+  height: 90px;
+  overflow-y:scroll;
+  border: solid 1px gray;
+  padding: 2px;
+  margin-bottom: 10px;
+  min-width: 250px;
+  
+}
+
+.NotesBox * {
+  border: none;
+}
+
+.FamilyButton
+{
+  font-weight: bold;
+  /*background-color: #CCFFCC;
+  border-radius: 10px;*/
+}
+
+.FamilyButton:hover 
+{
+  background-color: gray;
+}
+
+.FamilyButtonList
+{
+  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+  clear: both;
+}
+
+/* Form Tables */
+.contact
+{
+  padding: 5px;
+  background: white;
+}
+
+  .contact .control-group {
+    margin-bottom: 0px;
+  }
+
+.accueil
+{
+  padding: 10px;
+}
+.eleve
+{
+  width: 100%;
+  display: block;
+  clear: both;
+  background: #E3EAEB;
+}
+
+.eleve h3 {
+  cursor: pointer;
+}
+
+.eleve h4 {
+  color: Navy;
+  margin-top: 0px;
+}
+
+.eleve .details {
+  /*display: block;
+  width: 100%;
+  min-height: 250px;
+  margin-left: auto;
+  margin-right: auto;*/
+}
+
+.eleve .details, .eleve .section {
+  background: #E3EAEB;
+}
+
+.eleve .form-horizontal label.control-label {
+  width: 100px;
+  min-width: 50px;
+}
+
+.eleve .form-horizontal .controls {
+  margin-left: 105px;
+}
+
+.edition {
+  background-color: #A9556A;
+  background-color: rgba(100, 100, 255, 0.3);
+  padding-bottom: 20px;
+}
+
+/*.eleve .edition .details , .eleve .edition .section  {
+  background: #A9556A;
+}*/
+
+.divider {
+  height: 20px;
+  clear:both;
+}
+
+.left
+{
+  float:left;
+}
+
+.right
+{
+  float: none;
+}
+
+.inline
+{
+  display: inline;
+}
+
+.datadiv
+{
+  display: block;
+
+  margin-right: 15px;
+  margin-top: 5px;
+}
+.datadiv .right
+{
+  padding-right: 20px;
+}
+
+.datadiv span.checkbox 
+{
+  display: block;
+}
+
+.eleve section, .eleve .section {
+  display: block;
+  padding: 10px;
+  float:left;
+  min-width: 25%;
+  min-height: 250px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  height: 100%;
+}
+
+.section span.TDLabels
+{
+  display: inline-block;
+  min-width: 110px;
+}
