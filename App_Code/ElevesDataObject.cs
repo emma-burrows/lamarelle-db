@@ -14,20 +14,6 @@ using System.Data;
 public static class EleveDataObject
 {
 
-  private static string GetConnectionString()
-  {
-    string webconfig = "";
-    if (System.Environment.MachineName == "ASTELE" || System.Environment.MachineName == "PC0343")
-    {
-      webconfig = "LocalMySqlContactsConnectionString";
-    }
-    else
-    {
-      webconfig = "MySqlContactsConnectionString";
-    }
-    return ConfigurationManager.ConnectionStrings[webconfig].ConnectionString;
-  }
-
   [DataObjectMethod(DataObjectMethodType.Select)]
   public static List<Eleve> GetEleves() 
   {
@@ -36,7 +22,7 @@ public static class EleveDataObject
     //cmd.CommandType = CommandType.StoredProcedure;
 
     string sqlstring = "SELECT * FROM eleves ORDER BY Nom";
-    MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString()));
+    MySqlCommand cmd = new MySqlCommand(sqlstring, ContactsSQLHelper.GetConnection());
 
     cmd.Connection.Open();
     MySqlDataReader dr =
@@ -88,7 +74,7 @@ public static class EleveDataObject
     //               new MySqlConnection(GetConnectionString()));
     //cmd.CommandType = CommandType.StoredProcedure;
 
-    MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString()));
+    MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring);
     cmd.Parameters.Add(new MySqlParameter("key", contactid));
 
     cmd.Connection.Open();
@@ -144,7 +130,7 @@ public static class EleveDataObject
 
     
     //using(MySqlCommand cmd = new MySqlCommand("InsertEleve", new MySqlConnection(GetConnectionString())))
-    using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
       //cmd.CommandType = CommandType.StoredProcedure;
       cmd.Parameters.Add(new MySqlParameter("vContactID", contact.ContactID));
@@ -191,7 +177,7 @@ public static class EleveDataObject
       "RelationAutreParent=?vRelationAutreParent, NomAutreParent=?vNomAutreParent, PrenomAutreParent=?vPrenomAutreParent, AdresseAutreParent=?vAdresseAutreParent, FixeAutreParent=?vFixeAutreParent, PortableAutreParent=?vPortableAutreParent, EmailAutreParent=?vEmailAutreParent, Docteur=?vDocteur, " +
       "PhotosClasse=?vPhotosClasse, PhotosWeb=?vPhotosWeb, Gateaux=?vGateaux, PbMedicaux=?vPbMedicaux, DetailsMedicaux=?vDetailsMedicaux WHERE id=?key";
 
-    using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
 
       cmd.Parameters.Add(new MySqlParameter("key", contact.Eleve_ID));
@@ -230,7 +216,7 @@ public static class EleveDataObject
   {
     string sqlstring = "DELETE FROM `eleves` WHERE ID=?key";
 
-    using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
       cmd.Parameters.Add(new MySqlParameter("key", contact.Eleve_ID));
       cmd.Connection.Open();
@@ -246,7 +232,7 @@ public static class EleveDataObject
   {
     string sqlstring = "UPDATE `eleves` SET `ClasseActuelle`=?newClass WHERE ClasseActuelle=?oldClass AND ActuellementInscrit=1";
 
-    using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
 
       cmd.Parameters.Add(new MySqlParameter("newClass", newClass));

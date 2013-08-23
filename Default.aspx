@@ -2,26 +2,24 @@
 
 <script runat="server">
   int Span = 6;
-    
-    protected void Page_Load()
+   
+  protected void Page_Load()
+  {
+    string userrole = LoginHelper.UserRole(Page.User.Identity.Name);
+    if (userrole == "admin")
     {
-      string userrole = LoginHelper.UserRole(Page.User.Identity.Name);
-      if (userrole == "admin")
-      {
-        litAccueilAdmin.Visible = true;
-        Span = 4;    
-      }
-      ElevesHelper.GetEmailFile("fichiers/emails.txt", Page);
+      litAccueilAdmin.Visible = true;
+      Span = 4;    
     }
-
-
-
+    ElevesHelper.GetEmailFile("fichiers/emails.txt", Page);
+  }
 </script>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 
   <div class="hero-unit">
     <h1>Base de données</h1>
+    <%= ContactsSQLHelper.GetConnection() %>
     <p>Ce site contient les détails de nos élèves et leurs familles, enregistrés dans notre base de données. 
     Ces données confidentielles sont gérées et conservées directement par 
     La Marelle, conformément aux règles de The Information Commission avec qui nous sommes enregistrés. 

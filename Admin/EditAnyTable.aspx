@@ -29,8 +29,7 @@
 
     <asp:GridView ID="GridView1" runat="server" 
         EnableSortingAndPagingCallbacks="True" onrowdeleting="GridView1_RowDeleting" 
-        DataKeyNames="ID" ondatabinding="GridView1_DataBinding" 
-        ondatabound="GridView1_DataBound" onrowdatabound="GridView1_RowDataBound" 
+        DataKeyNames="ID" onrowdatabound="GridView1_RowDataBound" 
         onrowupdating="GridView1_RowUpdating" 
         onrowcancelingedit="GridView1_RowCancelingEdit" 
         onrowediting="GridView1_RowEditing">

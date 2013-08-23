@@ -96,11 +96,10 @@ public partial class EditAnyTable : System.Web.UI.Page
 
   private void BindDataGrid()
   {
-    ContactsSQLHelper conSql = new ContactsSQLHelper();
 
-    using (MySqlCommand cmd = conSql.GetCommand("SELECT * FROM " + tablename))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand("SELECT * FROM " + tablename))
     {
-      conSql.Connection.Open();
+      //cmd.Connection.Open();
       GridView1.DataSource = cmd.ExecuteReader();
       GridView1.DataBind();
     }
@@ -108,30 +107,26 @@ public partial class EditAnyTable : System.Web.UI.Page
 
   protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
   {
+    string insertSQL = "DELETE FROM " + tablename + " WHERE ID='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
+
+    int executed = 0;
+
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(insertSQL))
     {
+      //cmd.Connection.Open();
+      executed = cmd.ExecuteNonQuery();
+    }
 
-      string insertSQL = "DELETE FROM " + tablename + " WHERE ID='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
-
-      ContactsSQLHelper conSql = new ContactsSQLHelper();
-      int executed = 0;
-
-      using (MySqlCommand cmd = conSql.GetCommand(insertSQL))
-      {
-        conSql.Connection.Open();
-        executed = cmd.ExecuteNonQuery();
-      }
-
-      if (executed == 1)
-      {
-        Label1.Text = "Fiche supprimée avec succès";
-        EmptyTextBoxes();
-        BindDataGrid();
-      }
-      else
-      {
-        String message = "Une erreur est survenue. ID = '" + GridView1.Rows[e.RowIndex].Cells[1].Text + "' et Nombre = '" + GridView1.Rows[e.RowIndex].Cells[2].Text;
-        Label1.Text = message;
-      }
+    if (executed == 1)
+    {
+      Label1.Text = "Fiche supprimée avec succès";
+      EmptyTextBoxes();
+      BindDataGrid();
+    }
+    else
+    {
+      String message = "Une erreur est survenue. ID = '" + GridView1.Rows[e.RowIndex].Cells[1].Text + "' et Nombre = '" + GridView1.Rows[e.RowIndex].Cells[2].Text;
+      Label1.Text = message;
     }
   }
 
@@ -166,8 +161,7 @@ public partial class EditAnyTable : System.Web.UI.Page
 
   private Dictionary<string, string> CreateDictionary()
   {
-    Dictionary<string, string> values =
-            new Dictionary<string, string>();
+    Dictionary<string, string> values = new Dictionary<string, string>();
 
     foreach (TextBox tb in tbs)
     {
@@ -179,14 +173,6 @@ public partial class EditAnyTable : System.Web.UI.Page
 
 
 
-  // gridView events
-  protected void GridView1_DataBinding(object sender, EventArgs e)
-  {
-  }
-  protected void GridView1_DataBound(object sender, EventArgs e)
-  {
-
-  }
   protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
   {
     // The index depends on the presence or not of the Edit + Delete column
@@ -194,8 +180,12 @@ public partial class EditAnyTable : System.Web.UI.Page
     // Also relies on ID being the first column in the table, which is not great either
     // TODO: check if the edit buttons are enable
     if (e.Row.Cells.Count >= 1)
-      if (Page.User.Identity.Name != "emma@astele.co.uk" && GridView1.AutoGenerateEditButton==true)
+    {
+      if (Page.User.Identity.Name != "emma@astele.co.uk" && GridView1.AutoGenerateEditButton == true)
+      {
         e.Row.Cells[0].Visible = false;
+      }
+    }
 
   }
   protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -206,7 +196,6 @@ public partial class EditAnyTable : System.Web.UI.Page
     int id = Int32.Parse(GridView1.DataKeys[e.RowIndex].Value.ToString());
 
     GridViewRow row = (GridViewRow)GridView1.Rows[e.RowIndex];
-
 
     Dictionary<string, string> values = new Dictionary<string, string>();
 

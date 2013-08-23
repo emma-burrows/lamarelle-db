@@ -14,25 +14,11 @@ using System.Data;
 public static class ClassesDataObject
 {
 
-  private static string GetConnectionString()
-  {
-    string webconfig = "";
-    if (System.Environment.MachineName == "ASTELE" || System.Environment.MachineName == "PC0343")
-    {
-      webconfig = "LocalMySqlContactsConnectionString";
-    }
-    else
-    {
-      webconfig = "MySqlContactsConnectionString";
-    }
-    return ConfigurationManager.ConnectionStrings[webconfig].ConnectionString;
-  }
-
   [DataObjectMethod(DataObjectMethodType.Select)]
   public static List<Classe> GetClasses() 
   {
     string sqlstring = "SELECT * FROM classes ORDER BY Niveau, Nom";
-    MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString()));
+    MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring);
 
     cmd.Connection.Open();
     MySqlDataReader dr =
@@ -67,7 +53,7 @@ public static class ClassesDataObject
 
     
     //using(MySqlCommand cmd = new MySqlCommand("InsertEleve", new MySqlConnection(GetConnectionString())))
-    using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
       //cmd.CommandType = CommandType.StoredProcedure;
       cmd.Parameters.Add(new MySqlParameter("vAgeDebut", classe.AgeDebut));
@@ -81,8 +67,10 @@ public static class ClassesDataObject
       cmd.ExecuteNonQuery();
 
       // If has last inserted id, add a parameter to hold it.
-      if (cmd.LastInsertedId != null) cmd.Parameters.Add(
-                  new MySqlParameter("newId", cmd.LastInsertedId));
+      if (cmd.LastInsertedId != 0L)
+      {
+        cmd.Parameters.Add( new MySqlParameter("newId", cmd.LastInsertedId) );
+      }
 
       // Return the id of the new record. Convert from Int64 to Int32 (int).
       return Convert.ToInt32(cmd.Parameters["@newId"].Value);
@@ -95,7 +83,7 @@ public static class ClassesDataObject
   {
     string sqlstring = "UPDATE `classes` SET `Niveau`=?vNiveau, `Nom`=?vNom, `Enseignant`=?vEnseignant, `AgeDebut`=?vAgeDebut, `AgeFin`=?vAgeFin, `Section`=?vSection WHERE id=?key";
 
-    using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
 
       cmd.Parameters.Add(new MySqlParameter("key", classe.ID));
@@ -118,7 +106,7 @@ public static class ClassesDataObject
   {
     string sqlstring = "DELETE FROM `classes` WHERE ID=?key";
 
-    using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
       cmd.Parameters.Add(new MySqlParameter("key", contact.ID));
       cmd.Connection.Open();

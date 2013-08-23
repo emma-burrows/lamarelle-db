@@ -36,15 +36,14 @@ public static class LoginHelper
     public static bool ValidateLogin(string username, string password)
     {
       DataSet dataset = new DataSet();
-      ContactsSQLHelper conSql = new ContactsSQLHelper();
+      MySqlDataAdapter adapter = new MySqlDataAdapter();
 
-      using (MySqlDataAdapter adapter = new MySqlDataAdapter())
+      using (adapter.SelectCommand = ContactsSQLHelper.GetCommand("SELECT * FROM employes WHERE utilisateur = ?user AND motdepasse = ?pw"))
       {
-        adapter.SelectCommand = conSql.GetCommand("SELECT * FROM employes WHERE utilisateur = ?user AND motdepasse = ?pw");
         adapter.SelectCommand.Parameters.Add("?user", username);
         adapter.SelectCommand.Parameters.Add("?pw", ToMD5(password));
 
-        conSql.Connection.Open();
+        ContactsSQLHelper.GetConnection().Open();
 
         adapter.Fill(dataset);
 
@@ -66,97 +65,109 @@ public static class LoginHelper
   /// <param name="username">Username for the user to change</param>
   /// <param name="newpassword">New password</param>
   /// <returns>An int specifying whether the SQL query to update the record was successful or not.</returns>
-    public static int ChangePassword(string username, string newpassword)
+  public static int ChangePassword(string username, string newpassword)
+  {
+    string insertSQL = "UPDATE employes SET motdepasse=?pw WHERE utilisateur=?user";
+
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(insertSQL))
     {
-        ContactsSQLHelper conSql = new ContactsSQLHelper();
-        string insertSQL = "UPDATE employes SET motdepasse=?pw WHERE utilisateur=?user";
+      cmd.Parameters.Add("?pw", ToMD5(newpassword));
+      cmd.Parameters.Add("?user", username);
 
-        using (MySqlCommand cmd = conSql.GetCommand(insertSQL))
-        {
-          cmd.Parameters.Add("?pw", ToMD5(newpassword));
-          cmd.Parameters.Add("?user", username);
+      ContactsSQLHelper.GetConnection().Open();
 
-          conSql.Connection.Open();
-          return cmd.ExecuteNonQuery();
-        }
+      return cmd.ExecuteNonQuery();
     }
+  }
 
-    private static string GetUserRole(string username)
+  // Get te
+  private static string GetUserRole(string username)
+  {
+    string userrole = "";
+    string selectSQL = "SELECT * FROM employes WHERE utilisateur=?user";
+
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(selectSQL))
     {
-        ContactsSQLHelper conSql = new ContactsSQLHelper();
-        string selectSQL = "SELECT * FROM employes WHERE utilisateur=?user";
+      cmd.Parameters.AddWithValue("?user", username);
 
-        using (MySqlCommand cmd = conSql.GetCommand(selectSQL))
-        {
-           cmd.Parameters.Add("?user", username);
+      cmd.Connection.Open();
 
-          conSql.Connection.Open();
-          using(MySqlDataReader dr = cmd.ExecuteReader())
-          {
-              dr.Read();
-              if (dr.HasRows)
-              {
-                return dr.GetString(dr.GetOrdinal("role"));
-              }
-              else
-              {
-                return "";
-              }
-          }
-        }
-    }
-
-    public static string GetColumnComment(string tablename, string columnname) {
-      string comment = "";
-
-      ContactsSQLHelper conSql = new ContactsSQLHelper();
-      string selectSQL = "SELECT column_comment FROM information_schema.columns WHERE ((columns.table_name=?tablename) AND (columns.column_name=?columnname))";
-
-      using (MySqlCommand cmd = conSql.GetCommand(selectSQL))
+      using(MySqlDataReader dr = cmd.ExecuteReader())
       {
-        cmd.Parameters.Add("?tablename", tablename);
-        cmd.Parameters.Add("?columnname", columnname);
-
-        conSql.Connection.Open();
-        using (MySqlDataReader dr = cmd.ExecuteReader())
+        dr.Read();
+        if (dr.HasRows)
         {
-          dr.Read();
-          if (dr.HasRows)
-          {
-            return dr.GetString(0);
-          }
-          else
-          {
-            return "";
-          }
+          userrole = dr.GetString(dr.GetOrdinal("role"));
         }
+        return userrole;
       }
-
     }
+  }
 
-    public static string UserRole(string username)
+  /// <summary>
+  /// Get the MySQL comment attached to a particular column in a table.
+  /// Originally used to put in user-visible hints for quick and dirty table editing, 
+  /// but this is messy so marking obsolete until I can cull any references to it
+  /// </summary>
+  /// <param name="tablename"></param>
+  /// <param name="columnname"></param>
+  /// <returns></returns>
+  [Obsolete]
+  public static string GetColumnComment(string tablename, string columnname) 
+  {
+    string selectSQL = "SELECT column_comment FROM information_schema.columns WHERE ((columns.table_name=?tablename) AND (columns.column_name=?columnname))";
+
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(selectSQL))
     {
-        string role = "visitor";
-        HttpCookie cookieCheck = null;
-        
-        cookieCheck = HttpContext.Current.Request.Cookies["LaMarelleDB"];
+      cmd.Parameters.AddWithValue("?tablename", tablename);
+      cmd.Parameters.AddWithValue("?columnname", columnname);
 
+      ContactsSQLHelper.GetConnection().Open();
 
-        if (cookieCheck == null)
+      using (MySqlDataReader dr = cmd.ExecuteReader())
+      {
+        dr.Read();
+        if (dr.HasRows)
         {
-            role = GetUserRole(username);
-            HttpCookie cookieCreate = new HttpCookie("LaMarelleDB");
-            cookieCreate.Expires = DateTime.MinValue;
-            HttpContext.Current.Response.Cookies.Add(cookieCreate);
-
-            HttpContext.Current.Request.Cookies["LaMarelleDB"][username] = role;
-            return role;
+          return dr.GetString(0);
         }
         else
         {
-            return HttpContext.Current.Request.Cookies["LaMarelleDB"][username];
+          return "";
         }
+      }
     }
+
+  }
+
+  //TODO: make user roles into an enum
+  /// <summary>
+  /// Returns the role of the specified user as a string.
+  /// </summary>
+  /// <param name="username">The username (email address) as a string.</param>
+  /// <returns>User role - currently "visitor", "staff" and "admin"</returns>
+  public static string UserRole(string username)
+  {
+    string role = "visitor";
+    HttpCookie cookieCheck = null;
+        
+    cookieCheck = HttpContext.Current.Request.Cookies["LaMarelleDB"];
+
+    if (cookieCheck == null)
+    {
+        role = GetUserRole(username);
+        HttpCookie cookieCreate = new HttpCookie("LaMarelleDB");
+        cookieCreate.Expires = DateTime.MinValue;
+        HttpContext.Current.Response.Cookies.Add(cookieCreate);
+
+        HttpContext.Current.Request.Cookies["LaMarelleDB"][username] = role;
+        return role;
+    }
+    else
+    {
+        return HttpContext.Current.Request.Cookies["LaMarelleDB"][username];
+    }
+  }
 
 }
 
