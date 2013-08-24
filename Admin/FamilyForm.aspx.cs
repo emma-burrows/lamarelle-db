@@ -245,7 +245,7 @@ public partial class Admin_FamilyForm : System.Web.UI.Page
   // Set templates so they share code
   protected void ListView1_Init(object sender, EventArgs e)
   {
-    ListView1.InsertItemTemplate = ListView1.EditItemTemplate;
+    //ListView1.InsertItemTemplate = ListView1.EditItemTemplate;
     ListView1.SelectedItemTemplate = ListView1.ItemTemplate;
   }
 
@@ -357,7 +357,9 @@ public partial class Admin_FamilyForm : System.Web.UI.Page
 
   protected void ListView1_ItemInserting(object sender, ListViewInsertEventArgs e)
   {
-    foreach (DictionaryEntry de in e.Values)
+    ArrayList evalues = new ArrayList(e.Values);
+
+    foreach (DictionaryEntry de in evalues)
     {
       DateTime currentDate = DateTime.MinValue;
       if (de.Value != null && DateTime.TryParse(de.Value.ToString(), out currentDate))

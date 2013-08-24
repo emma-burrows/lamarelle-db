@@ -122,7 +122,7 @@ public static class LoginHelper
       cmd.Parameters.AddWithValue("?tablename", tablename);
       cmd.Parameters.AddWithValue("?columnname", columnname);
 
-      ContactsSQLHelper.GetConnection().Open();
+      cmd.Connection.Open();
 
       using (MySqlDataReader dr = cmd.ExecuteReader())
       {

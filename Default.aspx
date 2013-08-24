@@ -19,7 +19,6 @@
 
   <div class="hero-unit">
     <h1>Base de données</h1>
-    <%= ContactsSQLHelper.GetConnection() %>
     <p>Ce site contient les détails de nos élèves et leurs familles, enregistrés dans notre base de données. 
     Ces données confidentielles sont gérées et conservées directement par 
     La Marelle, conformément aux règles de The Information Commission avec qui nous sommes enregistrés. 

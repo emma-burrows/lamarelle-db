@@ -99,7 +99,7 @@ public partial class EditAnyTable : System.Web.UI.Page
 
     using (MySqlCommand cmd = ContactsSQLHelper.GetCommand("SELECT * FROM " + tablename))
     {
-      //cmd.Connection.Open();
+      cmd.Connection.Open();
       GridView1.DataSource = cmd.ExecuteReader();
       GridView1.DataBind();
     }

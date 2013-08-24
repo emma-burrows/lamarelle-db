@@ -499,7 +499,7 @@
     
     <EditItemTemplate>
       <div class="eleve edition container">
-              <table width="100%">
+      <table width="100%">
         <tr>
           <td align="left">
             <h3>
@@ -663,6 +663,172 @@
 
       </div>
     </EditItemTemplate>
+
+    <InsertItemTemplate>
+      <div class="eleve edition container">
+      <table width="100%">
+        <tr>
+          <td align="left">
+            <h3>
+            Nouvel enfant
+            </h3>
+            <asp:TextBox ID="ContactIDTextBox" Text='<%# Bind("ContactId") %>' runat="server" Visible="false"/>
+
+          </td>
+          <td align="right">
+          </td>
+        </tr>
+      </table>
+
+
+
+      <div class="row">
+      <div class="span3 form-horizontal">
+        <div class="control-group">
+          <label class="control-label">Nom de famille:</label> 
+          <div class="controls"><asp:TextBox ID="NomTextBox" CssClass="TDValue" runat="server" Text='<%# Bind("Nom") %>' /></div>
+        </div>
+      <div class="control-group">
+          <label class="control-label">Pr&eacute;nom:</label> 
+          <div class="controls"><asp:TextBox ID="PrenomTextBox" CssClass="TDValue" runat="server" Text='<%# Bind("Prenom") %>' /></div>
+        </div>
+      <div class="control-group">
+        <label class="control-label">N&eacute;(e) le:</label> 
+        <div class="controls">
+          <asp:TextBox ID="DateNaissanceTextBox" CssClass="TDValue" runat="server" Text='<%# Bind("DateNaissance", "{0:d}") %>' />
+          <asp:CalendarExtender ID="DateNaissanceCalendarExtender" runat="server" TargetControlID="DateNaissanceTextBox" Format="dd/MM/yyyy" />
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Nationalit&eacute;:</label> 
+        <div class="controls"><asp:TextBox ID="NationaliteTextBox" CssClass="TDValue" runat="server" Text='<%# Bind("Nationalite") %>' /></div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Sexe:</label>
+        <div class="controls"><asp:RadioButtonList SelectedValue='<%# Bind("Sexe") %>' ID="SexeRadioButtonList" CssClass="TDValue" RepeatDirection="Horizontal" runat="server">
+          <asp:ListItem Text="M" Value="M"/>
+          <asp:ListItem Text="F" Value="F" />
+        </asp:RadioButtonList></div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Premi&egrave;re rentr&eacute;e:</label>
+        <div class="controls">
+          <asp:TextBox ID="PremiereRentreeTextBox"  CssClass="TDValue" runat="server" Text='<%# Bind("PremiereRentree", "{0:MMMM yyyy}") %>' />
+          <asp:CalendarExtender ID="PremiereRentreeCalendarExtender" runat="server" TargetControlID="PremiereRentreeTextBox" Format="MMMM yyyy" />
+        </div>
+      </div>
+      <div class="control-group">
+          <label class="control-label">Classe Actuelle:</label>
+          <div class="controls"><asp:DropDownList ID="ClasseActuelleDropDown" CssClass="TDValue" runat="server" DataSourceID="odsClasses" DataTextField="Nom" DataValueField="Nom"></asp:DropDownList></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Inscrit:</label>
+          <div class="controls"><asp:CheckBox ID="ActuellementInscritCheckBox" CssClass="TDValue" runat="server" Text="" Checked='<%# Convert.ToBoolean(Eval("ActuellementInscrit")) %>' /></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Pr&eacute;-inscrit/en attente:</label>
+          <div class="controls"><asp:CheckBox ID="PreInscritCheckBox" CssClass="TDValue" runat="server" Text="" Checked='<%# Convert.ToBoolean(Eval("PreInscrit")) %>' /></div>
+        </div>
+      </div>
+      
+      <div class="span1"></div>
+      <div class="span3 form-horizontal">
+        <h4>Autre parent</h4>
+        <div class="control-group">
+          <label class="control-label">Relation avec l'enfant:</label>
+          <div class="controls"><asp:TextBox ID="RelationAutreParentTextBox" CssClass="TDValue" runat="server" 
+                       Text='<%# Bind("RelationAutreParent") %>' /></div>
+        </div>
+        
+        <div class="control-group">
+          <label class="control-label">Nom:</label>
+          <div class="controls"><asp:TextBox ID="NomAutreParentTextBox" CssClass="TDValue" runat="server" 
+                       Text='<%# Bind("NomAutreParent") %>' /></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Pr&eacute;nom:</label>
+          <div class="controls"><asp:TextBox ID="PrenomAutreParentTextBox" CssClass="TDValue" runat="server" 
+                       Text='<%# Bind("PrenomAutreParent") %>' /></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Portable:</label>
+          <div class="controls"><asp:TextBox ID="PortableAutreParentTextBox" CssClass="TDValue" runat="server" 
+                       Text='<%# Bind("PortableAutreParent") %>' /></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Fixe:</label>
+          <div class="controls"><asp:TextBox ID="FixeAutreParentTextBox" CssClass="TDValue" runat="server" 
+                       Text='<%# Bind("FixeAutreParent") %>' /></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Email:</label>
+          <div class="controls"><asp:TextBox ID="EmailAutreParentTextBox" CssClass="TDValue" runat="server" 
+                       Text='<%# Bind("EmailAutreParent") %>' /></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Adresse:</label>
+          <div class="controls"><asp:TextBox ID="AdresseAutreParentTextBox" CssClass="TDValue" runat="server" 
+                       Text='<%# Bind("AdresseAutreParent") %>' /></div>
+        </div>
+      </div>
+
+      <div class="span1"></div>
+
+      <div class="span3 form-horizontal">
+        <h4>D&eacute;tails m&eacute;dicaux</h4>
+        <div class="control-group">
+          <label class="control-label">Pb M&eacute;dicaux:</label>
+          <div class="controls"><asp:CheckBox ID="PbMedicauxCheckBox" CssClass="TDValue" runat="server" Text="" Checked='<%# Convert.ToBoolean(Eval("PbMedicaux")) %>' /></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">D&eacute;tails m&eacute;dicaux:</label>
+          <div class="controls"><asp:TextBox ID="DetailsMedicauxTextBox"  CssClass="TDValue" runat="server" 
+          Text='<%# Bind("DetailsMedicaux") %>' /></div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Docteur:</label>
+          <div class="controls"><asp:TextBox ID="DocteurTextBox" CssClass="TDValue" runat="server" Text='<%# Bind("Docteur") %>' Width="200" TextMode="MultiLine" /></div>
+        </div>
+        <br />
+        <h4>Permissions</h4>
+        <div class="control-group">
+          <label class="control-label">Photos en classe:</label>
+          <div class="controls"><asp:CheckBox ID="PhotosClasseCheckBox" CssClass="TDValue" runat="server" Text=""
+          Checked='<%# Convert.ToBoolean(Eval("PhotosClasse")) %>' /></div>
+        </div>
+        
+        <div class="control-group">
+          <label class="control-label">Photos sur Web:</label>
+          <div class="controls"><asp:CheckBox ID="PhotosWebCheckBox" CssClass="TDValue" runat="server" Text=""
+          Checked='<%# Convert.ToBoolean(Eval("PhotosWeb")) %>' /></div>
+        </div>
+        
+        <div class="control-group">
+          <label class="control-label">Gateaux:</label>
+          <div class="controls"><asp:CheckBox ID="GateauxCheckBox" CssClass="TDValue" runat="server" Text=""
+          Checked='<%# Convert.ToBoolean(Eval("Gateaux")) %>' /></div>
+        </div>
+        <br />
+      </div>
+     </div>
+
+
+
+        <asp:Panel CssClass="FamilyButtonList" id="EditButtons" Visible="false" runat="server">
+          <asp:Button ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update" Text="Sauver" CssClass="btn btn-primary" />
+          &nbsp;<asp:Button ID="UpdateCancelButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Annuler" CssClass="btn" />
+        </asp:Panel>
+
+        <asp:Panel CssClass="FamilyButtonList" id="InsertButtons" runat="server">
+          <asp:Button ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert" Text="Insérer cet enfant" CssClass="btn btn-primary" />
+          &nbsp;
+          <asp:Button ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Annuler" CssClass="btn" />
+        </asp:Panel>
+
+      </div>
+    </InsertItemTemplate>
+
     
     <EmptyDataTemplate>
       <span>Ce contact n'a pas d'enfants actuellement. Vous pouvez ajouter un enfant ci-dessous.</span>

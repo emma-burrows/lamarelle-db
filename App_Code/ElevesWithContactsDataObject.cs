@@ -14,20 +14,6 @@ using System.Data;
 public static class ElevesWithContactsDataObject
 {
 
-  private static string GetConnectionString()
-  {
-    string webconfig = "";
-    if (System.Environment.MachineName == "ASTELE" || System.Environment.MachineName == "PC0343")
-    {
-      webconfig = "LocalMySqlContactsConnectionString";
-    }
-    else
-    {
-      webconfig = "MySqlContactsConnectionString";
-    }
-    return ConfigurationManager.ConnectionStrings[webconfig].ConnectionString;
-  }
-
   [DataObjectMethod(DataObjectMethodType.Select)]
   public static List<EleveWithContacts> GetElevesWithContacts(string SortColumns, string Filter) 
   {
@@ -53,62 +39,63 @@ public static class ElevesWithContactsDataObject
       sqlstring += " ORDER BY " + verifiedsort;
 
 
-    MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString()));
-
-    cmd.Connection.Open();
-    MySqlDataReader dr =
-       cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    List<EleveWithContacts> EleveList = new List<EleveWithContacts>();
-    while (dr.Read())
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
-      EleveWithContacts contact = new EleveWithContacts();
-      contact.Eleve_ID = Convert.ToInt32(dr["ID"]);
-      contact.ActuellementInscrit = MakeBool(dr["ActuellementInscrit"].ToString());
-      contact.ContactID = Convert.ToInt32(dr["ContactID"]);
-      contact.AdresseAutreParent = Convert.ToString(dr["AdresseAutreParent"]);
-      contact.ClasseActuelle = Convert.ToString(dr["ClasseActuelle"]);
-      contact.DateNaissance = String.IsNullOrEmpty(dr["DateNaissance"].ToString()) ? Convert.ToDateTime("01/01/0001") : Convert.ToDateTime(dr["DateNaissance"]); //Convert.ToDateTime(dr["DateNaissance"]);
-      contact.DetailsMedicaux = Convert.ToString(dr["DetailsMedicaux"]);
-      contact.Docteur = Convert.ToString(dr["Docteur"]);
-      contact.EmailAutreParent = Convert.ToString(dr["EmailAutreParent"]);
-      contact.FixeAutreParent = Convert.ToString(dr["FixeAutreParent"]);
-      contact.Gateaux = MakeBool(dr["Gateaux"].ToString());
-      contact.Nationalite = Convert.ToString(dr["Nationalite"]);
-      contact.Nom = Convert.ToString(dr["Nom"]);
-      contact.NomAutreParent = Convert.ToString(dr["NomAutreParent"]);
-      contact.PbMedicaux = MakeBool(dr["PbMedicaux"].ToString());
-      contact.PhotosClasse = MakeBool(dr["PhotosClasse"].ToString());
-      contact.PhotosWeb = MakeBool(dr["PhotosWeb"].ToString());
-      contact.PortableAutreParent = Convert.ToString(dr["PortableAutreParent"]);
-      contact.PreInscrit = MakeBool(dr["PreInscrit"].ToString());
-      contact.PremiereRentree = String.IsNullOrEmpty(dr["PremiereRentree"].ToString()) ? Convert.ToDateTime("01/01/0001") : Convert.ToDateTime(dr["PremiereRentree"]);
-      contact.Prenom = Convert.ToString(dr["Prenom"]);
-      contact.PrenomAutreParent = Convert.ToString(dr["PrenomAutreParent"]);
-      contact.RelationAutreParent = Convert.ToString(dr["RelationAutreParent"]);
-      contact.Sexe = Convert.ToString(dr["Sexe"]);
 
-      // Information from Contacts table
-      contact.ActuellementInscritContact = MakeBool(dr["ActuellementInscritContact"].ToString());
-      contact.Adresse1 = Convert.ToString(dr["Adresse1"]);
-      contact.Adresse2 = Convert.ToString(dr["Adresse2"]);
-      contact.Adresse3 = Convert.ToString(dr["Adresse3"]);
-      contact.CodePostal = Convert.ToString(dr["Code Postal"]);
-      contact.Comite = MakeBool(dr["Comite"].ToString());
-      contact.Email = Convert.ToString(dr["Email"]);
-      contact.Fixe = Convert.ToString(dr["Fixe"]);
-      contact.NePasContacter = MakeBool(dr["NePasContacter"].ToString());
-      contact.NomContact = Convert.ToString(dr["NomContact"]);
-      contact.Notes = Convert.ToString(dr["Notes"]);
-      contact.Portable = Convert.ToString(dr["Portable"]);
-      contact.PrenomContact = Convert.ToString(dr["PrenomContact"]);
-      contact.Ville = Convert.ToString(dr["Ville"]);
+      cmd.Connection.Open();
+      MySqlDataReader dr =
+         cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-      EleveList.Add(contact);
+      List<EleveWithContacts> EleveList = new List<EleveWithContacts>();
+      while (dr.Read())
+      {
+        EleveWithContacts contact = new EleveWithContacts();
+        contact.Eleve_ID = Convert.ToInt32(dr["ID"]);
+        contact.ActuellementInscrit = MakeBool(dr["ActuellementInscrit"].ToString());
+        contact.ContactID = Convert.ToInt32(dr["ContactID"]);
+        contact.AdresseAutreParent = Convert.ToString(dr["AdresseAutreParent"]);
+        contact.ClasseActuelle = Convert.ToString(dr["ClasseActuelle"]);
+        contact.DateNaissance = String.IsNullOrEmpty(dr["DateNaissance"].ToString()) ? Convert.ToDateTime("01/01/0001") : Convert.ToDateTime(dr["DateNaissance"]); //Convert.ToDateTime(dr["DateNaissance"]);
+        contact.DetailsMedicaux = Convert.ToString(dr["DetailsMedicaux"]);
+        contact.Docteur = Convert.ToString(dr["Docteur"]);
+        contact.EmailAutreParent = Convert.ToString(dr["EmailAutreParent"]);
+        contact.FixeAutreParent = Convert.ToString(dr["FixeAutreParent"]);
+        contact.Gateaux = MakeBool(dr["Gateaux"].ToString());
+        contact.Nationalite = Convert.ToString(dr["Nationalite"]);
+        contact.Nom = Convert.ToString(dr["Nom"]);
+        contact.NomAutreParent = Convert.ToString(dr["NomAutreParent"]);
+        contact.PbMedicaux = MakeBool(dr["PbMedicaux"].ToString());
+        contact.PhotosClasse = MakeBool(dr["PhotosClasse"].ToString());
+        contact.PhotosWeb = MakeBool(dr["PhotosWeb"].ToString());
+        contact.PortableAutreParent = Convert.ToString(dr["PortableAutreParent"]);
+        contact.PreInscrit = MakeBool(dr["PreInscrit"].ToString());
+        contact.PremiereRentree = String.IsNullOrEmpty(dr["PremiereRentree"].ToString()) ? Convert.ToDateTime("01/01/0001") : Convert.ToDateTime(dr["PremiereRentree"]);
+        contact.Prenom = Convert.ToString(dr["Prenom"]);
+        contact.PrenomAutreParent = Convert.ToString(dr["PrenomAutreParent"]);
+        contact.RelationAutreParent = Convert.ToString(dr["RelationAutreParent"]);
+        contact.Sexe = Convert.ToString(dr["Sexe"]);
+
+        // Information from Contacts table
+        contact.ActuellementInscritContact = MakeBool(dr["ActuellementInscritContact"].ToString());
+        contact.Adresse1 = Convert.ToString(dr["Adresse1"]);
+        contact.Adresse2 = Convert.ToString(dr["Adresse2"]);
+        contact.Adresse3 = Convert.ToString(dr["Adresse3"]);
+        contact.CodePostal = Convert.ToString(dr["Code Postal"]);
+        contact.Comite = MakeBool(dr["Comite"].ToString());
+        contact.Email = Convert.ToString(dr["Email"]);
+        contact.Fixe = Convert.ToString(dr["Fixe"]);
+        contact.NePasContacter = MakeBool(dr["NePasContacter"].ToString());
+        contact.NomContact = Convert.ToString(dr["NomContact"]);
+        contact.Notes = Convert.ToString(dr["Notes"]);
+        contact.Portable = Convert.ToString(dr["Portable"]);
+        contact.PrenomContact = Convert.ToString(dr["PrenomContact"]);
+        contact.Ville = Convert.ToString(dr["Ville"]);
+
+        EleveList.Add(contact);
+      }
+      dr.Close();
+      return EleveList;
     }
-    dr.Close();
-    return EleveList;
-
   }
 
 
@@ -119,7 +106,7 @@ public static class ElevesWithContactsDataObject
       "RelationAutreParent=?vRelationAutreParent, NomAutreParent=?vNomAutreParent, PrenomAutreParent=?vPrenomAutreParent, AdresseAutreParent=?vAdresseAutreParent, FixeAutreParent=?vFixeAutreParent, PortableAutreParent=?vPortableAutreParent, EmailAutreParent=?vEmailAutreParent, Docteur=?vDocteur, " +
       "PhotosClasse=?vPhotosClasse, PhotosWeb=?vPhotosWeb, Gateaux=?vGateaux, PbMedicaux=?vPbMedicaux, DetailsMedicaux=?vDetailsMedicaux WHERE id=?key";
 
-    using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
       
       cmd.Parameters.Add(new MySqlParameter("key", contact.Eleve_ID));
@@ -154,7 +141,7 @@ public static class ElevesWithContactsDataObject
 
     sqlstring = "UPDATE ct_contacts SET `Nom`=?vNom, `Prenom`=?vPrenom, `Adresse1`=?vAdresse1, `Adresse2`=?vAdresse2, `Adresse3`=?vAdresse3, `Ville`=?vVille, `Code Postal`=?vCodePostal, `Fixe`=?vFixe, `Portable`=?vPortable, `Email`=?vEmail, `Notes`=?vNotes, `ActuellementInscrit`=?vActuellementInscrit, `Comite`=?vComite, `NePasContacter`=?vNePasContacter WHERE ID = ?vContactID";
 
-    using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
       //cmd.CommandType = CommandType.StoredProcedure;
       cmd.Parameters.Add(new MySqlParameter("vContactID", contact.ContactID));
