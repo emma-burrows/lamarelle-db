@@ -38,10 +38,10 @@ public static class LoginHelper
       DataSet dataset = new DataSet();
       MySqlDataAdapter adapter = new MySqlDataAdapter();
 
-      using (adapter.SelectCommand = ContactsSQLHelper.GetCommand("SELECT * FROM employes WHERE utilisateur = ?user AND motdepasse = ?pw"))
+      using (adapter.SelectCommand = ContactsSQLHelper.GetCommand("SELECT * FROM employes WHERE utilisateur = @user AND motdepasse = @pw"))
       {
-        adapter.SelectCommand.Parameters.Add("?user", username);
-        adapter.SelectCommand.Parameters.Add("?pw", ToMD5(password));
+        adapter.SelectCommand.Parameters.Add("@user", username);
+        adapter.SelectCommand.Parameters.Add("@pw", ToMD5(password));
 
         ContactsSQLHelper.GetConnection().Open();
 
@@ -74,7 +74,7 @@ public static class LoginHelper
       cmd.Parameters.Add("?pw", ToMD5(newpassword));
       cmd.Parameters.Add("?user", username);
 
-      ContactsSQLHelper.GetConnection().Open();
+      cmd.Connection.Open();
 
       return cmd.ExecuteNonQuery();
     }
@@ -84,11 +84,11 @@ public static class LoginHelper
   private static string GetUserRole(string username)
   {
     string userrole = "";
-    string selectSQL = "SELECT * FROM employes WHERE utilisateur=?user";
+    string selectSQL = "SELECT * FROM employes WHERE utilisateur=@user";
 
     using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(selectSQL))
     {
-      cmd.Parameters.AddWithValue("?user", username);
+      cmd.Parameters.AddWithValue("@user", username);
 
       cmd.Connection.Open();
 
