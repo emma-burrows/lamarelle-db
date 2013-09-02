@@ -70,17 +70,17 @@
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= ResolveUrl("~/Admin/FamilyForm.aspx?s=0") %>">Non-inscrits</a></li>
                 </ul>
               </li>
-              <asp:Literal runat="server" ID="pnAdmin" Visible="false">
+              <asp:Panel runat="server" ID="pnAdmin" CssClass="menu-panel" Visible="false">
                 <li class="dropdown">
-                  <a href="#" id="drop3" role="button" class="dropdown-toggle" data-toggle="dropdown">Administration <b class="caret"></b></a>
-                  <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="Admin/FamilyForm.aspx?f=1">Familles</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="Admin/Classes.aspx">Classes</a></li>
+                  <a href="#" id="admin-menu" role="button" class="dropdown-toggle" data-toggle="dropdown">Administration <b class="caret"></b></a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="admin-menu">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= ResolveUrl("~/Admin/FamilyForm.aspx?f=1") %>">Familles</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= ResolveUrl("~/Admin/Classes.aspx") %>">Classes</a></li>
                     <li role="presentation" class="divider"></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="Admin/EditAnyTable.aspx?t=employes">Utilisateurs</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= ResolveUrl("~/Admin/EditAnyTable.aspx?t=employes") %>">Utilisateurs</a></li>
                   </ul>
                 </li>
-              </asp:Literal>
+              </asp:Panel>
             </ul>
             <ul class="nav pull-right">
               <li>

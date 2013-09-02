@@ -14,68 +14,46 @@ using System.Data;
 public static class ContactDataObject
 {
 
-  private static string GetConnectionString()
-  {
-    string webconfig = "";
-    if (System.Environment.MachineName == "ASTELE" || System.Environment.MachineName == "PC0343")
-    {
-      webconfig = "LocalMySqlContactsConnectionString";
-    }
-    else
-    {
-      webconfig = "MySqlContactsConnectionString";
-    }
-    return ConfigurationManager.ConnectionStrings[webconfig].ConnectionString;
-  }
-
   [DataObjectMethod(DataObjectMethodType.Select)]
   public static List<Contact> GetContacts() 
   {
-
-    //MySqlCommand cmd = new MySqlCommand("ShowAllContact",
-    //               new MySqlConnection(GetConnectionString()));
-    //cmd.CommandType = CommandType.StoredProcedure;
-
     string sqlstring = "SELECT * FROM ct_contacts ORDER BY Nom";
-    MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString()));
-
-    cmd.Connection.Open();
-    MySqlDataReader dr =
-       cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    List<Contact> ContactList = new List<Contact>();
-    while (dr.Read())
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
-      Contact contact = new Contact();
-      contact.Contact_ID = Convert.ToInt32(dr["ID"]);
-      contact.ActuellementInscrit = Convert.ToInt32(dr["ActuellementInscrit"]);
-      contact.Adresse1 = Convert.ToString(dr["Adresse1"]);
-      contact.Adresse2 = Convert.ToString(dr["Adresse2"]);
-      contact.Adresse3 = Convert.ToString(dr["Adresse3"]);
-      contact.CodePostal = Convert.ToString(dr["Code Postal"]);
-      contact.Comite = Convert.ToInt32(dr["Comite"]);
-      contact.Email = Convert.ToString(dr["Email"]);
-      contact.Fixe = Convert.ToString(dr["Fixe"]);
-      contact.NePasContacter = Convert.ToInt32(dr["NePasContacter"]);
-      contact.Nom = Convert.ToString(dr["Nom"]);
-      contact.Notes = Convert.ToString(dr["Notes"]);
-      contact.Portable = Convert.ToString(dr["Portable"]);
-      contact.Prenom = Convert.ToString(dr["Prenom"]);
-      contact.Ville = Convert.ToString(dr["Ville"]);
-      ContactList.Add(contact);
-    }
-    dr.Close();
-    return ContactList;
 
+      cmd.Connection.Open();
+      MySqlDataReader dr =
+         cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+      List<Contact> ContactList = new List<Contact>();
+      while (dr.Read())
+      {
+        Contact contact = new Contact();
+        contact.Contact_ID = Convert.ToInt32(dr["ID"]);
+        contact.ActuellementInscrit = Convert.ToInt32(dr["ActuellementInscrit"]);
+        contact.Adresse1 = Convert.ToString(dr["Adresse1"]);
+        contact.Adresse2 = Convert.ToString(dr["Adresse2"]);
+        contact.Adresse3 = Convert.ToString(dr["Adresse3"]);
+        contact.CodePostal = Convert.ToString(dr["Code Postal"]);
+        contact.Comite = Convert.ToInt32(dr["Comite"]);
+        contact.Email = Convert.ToString(dr["Email"]);
+        contact.Fixe = Convert.ToString(dr["Fixe"]);
+        contact.NePasContacter = Convert.ToInt32(dr["NePasContacter"]);
+        contact.Nom = Convert.ToString(dr["Nom"]);
+        contact.Notes = Convert.ToString(dr["Notes"]);
+        contact.Portable = Convert.ToString(dr["Portable"]);
+        contact.Prenom = Convert.ToString(dr["Prenom"]);
+        contact.Ville = Convert.ToString(dr["Ville"]);
+        ContactList.Add(contact);
+      }
+      dr.Close();
+      return ContactList;
+    }
   }
 
   [DataObjectMethod(DataObjectMethodType.Select)]
   public static List<Contact> GetContactsById(Int32 ContactID, Int32 Status)
   {
-
-    //MySqlCommand cmd = new MySqlCommand("ShowAllContact",
-    //               new MySqlConnection(GetConnectionString()));
-    //cmd.CommandType = CommandType.StoredProcedure;
     string sqlstring = "SELECT * FROM ct_contacts";
     if (ContactID == 0 && Status == -1)
     {
@@ -90,84 +68,83 @@ public static class ContactDataObject
       sqlstring += " WHERE ActuellementInscrit=?inscrit ORDER BY Nom";
     }
 
-    MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString()));
-    if (ContactID > 0) { 
-      cmd.Parameters.Add(new MySqlParameter("key", ContactID)); 
-    }
-    if (Status >= 0)
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
-      cmd.Parameters.Add(new MySqlParameter("inscrit", Status)); 
-    }
-    cmd.Connection.Open();
-    MySqlDataReader dr =
-       cmd.ExecuteReader(CommandBehavior.CloseConnection);
+      if (ContactID > 0)
+      {
+        cmd.Parameters.Add(new MySqlParameter("key", ContactID));
+      }
+      if (Status >= 0)
+      {
+        cmd.Parameters.Add(new MySqlParameter("inscrit", Status));
+      }
+      cmd.Connection.Open();
+      MySqlDataReader dr =
+         cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-    List<Contact> ContactList = new List<Contact>();
-    while (dr.Read())
-    {
-      Contact contact = new Contact();
-      contact.Contact_ID = Convert.ToInt32(dr["ID"]);
-      contact.ActuellementInscrit = Convert.ToInt32(dr["ActuellementInscrit"]);
-      contact.Adresse1 = Convert.ToString(dr["Adresse1"]);
-      contact.Adresse2 = Convert.ToString(dr["Adresse2"]);
-      contact.Adresse3 = Convert.ToString(dr["Adresse3"]);
-      contact.CodePostal = Convert.ToString(dr["Code Postal"]);
-      contact.Comite = Convert.ToInt32(dr["Comite"]);
-      contact.Email = Convert.ToString(dr["Email"]);
-      contact.Fixe = Convert.ToString(dr["Fixe"]);
-      contact.NePasContacter = Convert.ToInt32(dr["NePasContacter"]);
-      contact.Nom = Convert.ToString(dr["Nom"]);
-      contact.Notes = Convert.ToString(dr["Notes"]);
-      contact.Portable = Convert.ToString(dr["Portable"]);
-      contact.Prenom = Convert.ToString(dr["Prenom"]);
-      contact.Ville = Convert.ToString(dr["Ville"]);
-      ContactList.Add(contact);
+      List<Contact> ContactList = new List<Contact>();
+      while (dr.Read())
+      {
+        Contact contact = new Contact();
+        contact.Contact_ID = Convert.ToInt32(dr["ID"]);
+        contact.ActuellementInscrit = Convert.ToInt32(dr["ActuellementInscrit"]);
+        contact.Adresse1 = Convert.ToString(dr["Adresse1"]);
+        contact.Adresse2 = Convert.ToString(dr["Adresse2"]);
+        contact.Adresse3 = Convert.ToString(dr["Adresse3"]);
+        contact.CodePostal = Convert.ToString(dr["Code Postal"]);
+        contact.Comite = Convert.ToInt32(dr["Comite"]);
+        contact.Email = Convert.ToString(dr["Email"]);
+        contact.Fixe = Convert.ToString(dr["Fixe"]);
+        contact.NePasContacter = Convert.ToInt32(dr["NePasContacter"]);
+        contact.Nom = Convert.ToString(dr["Nom"]);
+        contact.Notes = Convert.ToString(dr["Notes"]);
+        contact.Portable = Convert.ToString(dr["Portable"]);
+        contact.Prenom = Convert.ToString(dr["Prenom"]);
+        contact.Ville = Convert.ToString(dr["Ville"]);
+        ContactList.Add(contact);
+      }
+      dr.Close();
+      return ContactList;
     }
-    dr.Close();
-    return ContactList;
-
   }
 
   [DataObjectMethod(DataObjectMethodType.Select)]
   public static List<Contact> GetContactsByStatus(Boolean inscrit)
   {
-
-    //MySqlCommand cmd = new MySqlCommand("ShowAllContact",
-    //               new MySqlConnection(GetConnectionString()));
-    //cmd.CommandType = CommandType.StoredProcedure;
     string sqlstring = "";
     sqlstring = "SELECT * FROM ct_contacts WHERE ActuellementInscrit=?inscrit ORDER BY Nom";
 
-    MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString()));
-    cmd.Parameters.Add(new MySqlParameter("inscrit", inscrit));
-    cmd.Connection.Open();
-    MySqlDataReader dr =
-       cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    List<Contact> ContactList = new List<Contact>();
-    while (dr.Read())
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
-      Contact contact = new Contact();
-      contact.Contact_ID = Convert.ToInt32(dr["ID"]);
-      contact.ActuellementInscrit = Convert.ToInt32(dr["ActuellementInscrit"]);
-      contact.Adresse1 = Convert.ToString(dr["Adresse1"]);
-      contact.Adresse2 = Convert.ToString(dr["Adresse2"]);
-      contact.Adresse3 = Convert.ToString(dr["Adresse3"]);
-      contact.CodePostal = Convert.ToString(dr["Code Postal"]);
-      contact.Comite = Convert.ToInt32(dr["Comite"]);
-      contact.Email = Convert.ToString(dr["Email"]);
-      contact.Fixe = Convert.ToString(dr["Fixe"]);
-      contact.NePasContacter = Convert.ToInt32(dr["NePasContacter"]);
-      contact.Nom = Convert.ToString(dr["Nom"]);
-      contact.Notes = Convert.ToString(dr["Notes"]);
-      contact.Portable = Convert.ToString(dr["Portable"]);
-      contact.Prenom = Convert.ToString(dr["Prenom"]);
-      contact.Ville = Convert.ToString(dr["Ville"]);
-      ContactList.Add(contact);
-    }
-    dr.Close();
-    return ContactList;
+      cmd.Parameters.Add(new MySqlParameter("inscrit", inscrit));
+      cmd.Connection.Open();
+      MySqlDataReader dr =
+         cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
+      List<Contact> ContactList = new List<Contact>();
+      while (dr.Read())
+      {
+        Contact contact = new Contact();
+        contact.Contact_ID = Convert.ToInt32(dr["ID"]);
+        contact.ActuellementInscrit = Convert.ToInt32(dr["ActuellementInscrit"]);
+        contact.Adresse1 = Convert.ToString(dr["Adresse1"]);
+        contact.Adresse2 = Convert.ToString(dr["Adresse2"]);
+        contact.Adresse3 = Convert.ToString(dr["Adresse3"]);
+        contact.CodePostal = Convert.ToString(dr["Code Postal"]);
+        contact.Comite = Convert.ToInt32(dr["Comite"]);
+        contact.Email = Convert.ToString(dr["Email"]);
+        contact.Fixe = Convert.ToString(dr["Fixe"]);
+        contact.NePasContacter = Convert.ToInt32(dr["NePasContacter"]);
+        contact.Nom = Convert.ToString(dr["Nom"]);
+        contact.Notes = Convert.ToString(dr["Notes"]);
+        contact.Portable = Convert.ToString(dr["Portable"]);
+        contact.Prenom = Convert.ToString(dr["Prenom"]);
+        contact.Ville = Convert.ToString(dr["Ville"]);
+        ContactList.Add(contact);
+      }
+      dr.Close();
+      return ContactList;
+    }
   }
 
   [DataObjectMethod(DataObjectMethodType.Insert)]
@@ -176,10 +153,8 @@ public static class ContactDataObject
     string sqlstring = "INSERT INTO ct_contacts (`Nom`, `Prenom`, `Adresse1`, `Adresse2`, `Adresse3`, `Ville`, `Code Postal`, `Fixe`, `Portable`, `Email`, `Notes`, `ActuellementInscrit`, `Comite`, `NePasContacter`) ";
     sqlstring += "VALUES(?vNom, ?vPrenom, ?vAdresse1, ?vAdresse2, ?vAdresse3, ?vVille, ?vCodePostal, ?vFixe, ?vPortable, ?vEmail, ?vNotes, ?vActuellementInscrit, ?vComite, ?vNePasContacter)";
 
-    //using (MySqlCommand cmd = new MySqlCommand("InsertContact", new MySqlConnection(GetConnectionString())))
-    using(MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
-      //cmd.CommandType = CommandType.StoredProcedure;
       cmd.Parameters.Add(new MySqlParameter("vNom", contact.Nom));
       cmd.Parameters.Add(new MySqlParameter("vPrenom", contact.Prenom));
       cmd.Parameters.Add(new MySqlParameter("vAdresse1", contact.Adresse1));
@@ -211,10 +186,8 @@ public static class ContactDataObject
   {
     string sqlstring = "UPDATE ct_contacts SET `Nom`=?vNom, `Prenom`=?vPrenom, `Adresse1`=?vAdresse1, `Adresse2`=?vAdresse2, `Adresse3`=?vAdresse3, `Ville`=?vVille, `Code Postal`=?vCodePostal, `Fixe`=?vFixe, `Portable`=?vPortable, `Email`=?vEmail, `Notes`=?vNotes, `ActuellementInscrit`=?vActuellementInscrit, `Comite`=?vComite, `NePasContacter`=?vNePasContacter WHERE ID = ?key";
 
-    //using (MySqlCommand cmd = new MySqlCommand("UpdateContact", new MySqlConnection(GetConnectionString())))
-    using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
-      //cmd.CommandType = CommandType.StoredProcedure;
       cmd.Parameters.Add(new MySqlParameter("key", contact.Contact_ID));
       cmd.Parameters.Add(new MySqlParameter("vNom", contact.Nom));
       cmd.Parameters.Add(new MySqlParameter("vPrenom", contact.Prenom));
@@ -239,13 +212,9 @@ public static class ContactDataObject
   [DataObjectMethod(DataObjectMethodType.Delete)]
   public static int DeleteContact(Contact contact)
   {
-    //MySqlCommand cmd = new MySqlCommand("DeleteNews",
-    //        new MySqlConnection(GetConnectionString()));
-    //cmd.CommandType = CommandType.StoredProcedure;
-
     string sqlstring = "DELETE FROM ct_contacts WHERE ID=?key";
 
-    using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
     {
       cmd.Parameters.Add(new MySqlParameter("key", contact.Contact_ID));
       cmd.Connection.Open();

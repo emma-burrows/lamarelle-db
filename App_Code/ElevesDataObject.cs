@@ -36,6 +36,9 @@ public static class EleveDataObject
     //cmd.CommandType = CommandType.StoredProcedure;
 
     string sqlstring = "SELECT * FROM eleves ORDER BY Nom";
+<<<<<<< HEAD
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
+=======
     MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString()));
 
     cmd.Connection.Open();
@@ -44,38 +47,46 @@ public static class EleveDataObject
 
     List<Eleve> EleveList = new List<Eleve>();
     while (dr.Read())
+>>>>>>> parent of 585e290... Changed ContactsSQLHelper to a static class, and refactored all data access classes to use this instead of recreating the connection string each time.
     {
-      Eleve contact = new Eleve();
-      contact.Eleve_ID = Convert.ToInt32(dr["ID"]);
-      contact.ActuellementInscrit = Convert.ToInt32(dr["ActuellementInscrit"]);
-      contact.ContactID = Convert.ToInt32(dr["ContactID"]);
-      contact.AdresseAutreParent = Convert.ToString(dr["AdresseAutreParent"]);
-      contact.ClasseActuelle = Convert.ToString(dr["ClasseActuelle"]);
-      contact.DateNaissance = Convert.ToDateTime(dr["DateNaissance"]); //Convert.ToDateTime(dr["DateNaissance"]);
-      contact.DetailsMedicaux = Convert.ToString(dr["DetailsMedicaux"]);
-      contact.Docteur = Convert.ToString(dr["Docteur"]);
-      contact.EmailAutreParent = Convert.ToString(dr["EmailAutreParent"]);
-      contact.FixeAutreParent = Convert.ToString(dr["FixeAutreParent"]);
-      contact.Gateaux = Convert.ToInt32(dr["Gateaux"]);
-      contact.Nationalite = Convert.ToString(dr["Nationalite"]);
-      contact.Nom = Convert.ToString(dr["Nom"]);
-      contact.NomAutreParent = Convert.ToString(dr["NomAutreParent"]);
-      contact.PbMedicaux = Convert.ToInt32(dr["PbMedicaux"]);
-      contact.PhotosClasse = Convert.ToInt32(dr["PhotosClasse"]);
-      contact.PhotosWeb = Convert.ToInt32(dr["PhotosWeb"]);
-      contact.PortableAutreParent = Convert.ToString(dr["PortableAutreParent"]);
-      contact.PreInscrit = Convert.ToInt32(dr["PreInscrit"]);
-      contact.PremiereRentree = Convert.ToDateTime(dr["PremiereRentree"]);
-      contact.Prenom = Convert.ToString(dr["Prenom"]);
-      contact.PrenomAutreParent = Convert.ToString(dr["PrenomAutreParent"]);
-      contact.RelationAutreParent = Convert.ToString(dr["RelationAutreParent"]);
-      contact.Sexe = Convert.ToString(dr["Sexe"]);
- 
-      EleveList.Add(contact);
-    }
-    dr.Close();
-    return EleveList;
+      cmd.Connection.Open();
+      MySqlDataReader dr =
+         cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
+      List<Eleve> EleveList = new List<Eleve>();
+      while (dr.Read())
+      {
+        Eleve contact = new Eleve();
+        contact.Eleve_ID = Convert.ToInt32(dr["ID"]);
+        contact.ActuellementInscrit = Convert.ToInt32(dr["ActuellementInscrit"]);
+        contact.ContactID = Convert.ToInt32(dr["ContactID"]);
+        contact.AdresseAutreParent = Convert.ToString(dr["AdresseAutreParent"]);
+        contact.ClasseActuelle = Convert.ToString(dr["ClasseActuelle"]);
+        contact.DateNaissance = Convert.ToDateTime(dr["DateNaissance"]); //Convert.ToDateTime(dr["DateNaissance"]);
+        contact.DetailsMedicaux = Convert.ToString(dr["DetailsMedicaux"]);
+        contact.Docteur = Convert.ToString(dr["Docteur"]);
+        contact.EmailAutreParent = Convert.ToString(dr["EmailAutreParent"]);
+        contact.FixeAutreParent = Convert.ToString(dr["FixeAutreParent"]);
+        contact.Gateaux = Convert.ToInt32(dr["Gateaux"]);
+        contact.Nationalite = Convert.ToString(dr["Nationalite"]);
+        contact.Nom = Convert.ToString(dr["Nom"]);
+        contact.NomAutreParent = Convert.ToString(dr["NomAutreParent"]);
+        contact.PbMedicaux = Convert.ToInt32(dr["PbMedicaux"]);
+        contact.PhotosClasse = Convert.ToInt32(dr["PhotosClasse"]);
+        contact.PhotosWeb = Convert.ToInt32(dr["PhotosWeb"]);
+        contact.PortableAutreParent = Convert.ToString(dr["PortableAutreParent"]);
+        contact.PreInscrit = Convert.ToInt32(dr["PreInscrit"]);
+        contact.PremiereRentree = Convert.ToDateTime(dr["PremiereRentree"]);
+        contact.Prenom = Convert.ToString(dr["Prenom"]);
+        contact.PrenomAutreParent = Convert.ToString(dr["PrenomAutreParent"]);
+        contact.RelationAutreParent = Convert.ToString(dr["RelationAutreParent"]);
+        contact.Sexe = Convert.ToString(dr["Sexe"]);
+
+        EleveList.Add(contact);
+      }
+      dr.Close();
+      return EleveList;
+    }
   }
 
   [DataObjectMethod(DataObjectMethodType.Select)]
@@ -88,6 +99,9 @@ public static class EleveDataObject
     //               new MySqlConnection(GetConnectionString()));
     //cmd.CommandType = CommandType.StoredProcedure;
 
+<<<<<<< HEAD
+    using (MySqlCommand cmd = ContactsSQLHelper.GetCommand(sqlstring))
+=======
     MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString()));
     cmd.Parameters.Add(new MySqlParameter("key", contactid));
 
@@ -97,38 +111,48 @@ public static class EleveDataObject
 
     List<Eleve> EleveList = new List<Eleve>();
     while (dr.Read())
+>>>>>>> parent of 585e290... Changed ContactsSQLHelper to a static class, and refactored all data access classes to use this instead of recreating the connection string each time.
     {
-      Eleve contact = new Eleve();
-      contact.Eleve_ID = Convert.ToInt32(dr["ID"]);
-      contact.ActuellementInscrit = Convert.ToInt32(dr["ActuellementInscrit"]);
-      contact.ContactID = Convert.ToInt32(dr["ContactID"]);
-      contact.AdresseAutreParent = Convert.ToString(dr["AdresseAutreParent"]);
-      contact.ClasseActuelle = Convert.ToString(dr["ClasseActuelle"]);
-      contact.DateNaissance = Convert.ToDateTime(dr["DateNaissance"]); //Convert.ToDateTime(dr["DateNaissance"]);
-      contact.DetailsMedicaux = Convert.ToString(dr["DetailsMedicaux"]);
-      contact.Docteur = Convert.ToString(dr["Docteur"]);
-      contact.EmailAutreParent = Convert.ToString(dr["EmailAutreParent"]);
-      contact.FixeAutreParent = Convert.ToString(dr["FixeAutreParent"]);
-      contact.Gateaux = String.IsNullOrEmpty(dr["Gateaux"].ToString()) ? 0 : Convert.ToInt32(dr["Gateaux"]);
-      contact.Nationalite = Convert.ToString(dr["Nationalite"]);
-      contact.Nom = Convert.ToString(dr["Nom"]);
-      contact.NomAutreParent = Convert.ToString(dr["NomAutreParent"]);
-      contact.PbMedicaux = String.IsNullOrEmpty(dr["PbMedicaux"].ToString()) ? 0 : Convert.ToInt32(dr["PbMedicaux"]);
-      contact.PhotosClasse = String.IsNullOrEmpty(dr["PhotosClasse"].ToString()) ? 0 : Convert.ToInt32(dr["PhotosClasse"]);
-      contact.PhotosWeb = String.IsNullOrEmpty(dr["PhotosWeb"].ToString()) ? 0 : Convert.ToInt32(dr["PhotosWeb"]);
-      contact.PortableAutreParent = Convert.ToString(dr["PortableAutreParent"]);
-      contact.PreInscrit = Convert.ToInt32(dr["PreInscrit"]);
-      contact.PremiereRentree = Convert.ToDateTime(dr["PremiereRentree"]);
-      contact.Prenom = Convert.ToString(dr["Prenom"]);
-      contact.PrenomAutreParent = Convert.ToString(dr["PrenomAutreParent"]);
-      contact.RelationAutreParent = Convert.ToString(dr["RelationAutreParent"]);
-      contact.Sexe = Convert.ToString(dr["Sexe"]);
+      cmd.Parameters.Add(new MySqlParameter("key", contactid));
 
-      EleveList.Add(contact);
+      cmd.Connection.Open();
+      MySqlDataReader dr =
+         cmd.ExecuteReader(CommandBehavior.CloseConnection); //eleves error
+
+      List<Eleve> EleveList = new List<Eleve>();
+      while (dr.Read())
+      {
+        Eleve eleve = new Eleve();
+        eleve.Eleve_ID = Convert.ToInt32(dr["ID"]);
+        eleve.ActuellementInscrit = Convert.ToInt32(dr["ActuellementInscrit"]);
+        eleve.ContactID = Convert.ToInt32(dr["ContactID"]);
+        eleve.AdresseAutreParent = Convert.ToString(dr["AdresseAutreParent"]);
+        eleve.ClasseActuelle = Convert.ToString(dr["ClasseActuelle"]);
+        eleve.DateNaissance = Convert.ToDateTime(dr["DateNaissance"]); //Convert.ToDateTime(dr["DateNaissance"]);
+        eleve.DetailsMedicaux = Convert.ToString(dr["DetailsMedicaux"]);
+        eleve.Docteur = Convert.ToString(dr["Docteur"]);
+        eleve.EmailAutreParent = Convert.ToString(dr["EmailAutreParent"]);
+        eleve.FixeAutreParent = Convert.ToString(dr["FixeAutreParent"]);
+        eleve.Gateaux = String.IsNullOrEmpty(dr["Gateaux"].ToString()) ? 0 : Convert.ToInt32(dr["Gateaux"]);
+        eleve.Nationalite = Convert.ToString(dr["Nationalite"]);
+        eleve.Nom = Convert.ToString(dr["Nom"]);
+        eleve.NomAutreParent = Convert.ToString(dr["NomAutreParent"]);
+        eleve.PbMedicaux = String.IsNullOrEmpty(dr["PbMedicaux"].ToString()) ? 0 : Convert.ToInt32(dr["PbMedicaux"]);
+        eleve.PhotosClasse = String.IsNullOrEmpty(dr["PhotosClasse"].ToString()) ? 0 : Convert.ToInt32(dr["PhotosClasse"]);
+        eleve.PhotosWeb = String.IsNullOrEmpty(dr["PhotosWeb"].ToString()) ? 0 : Convert.ToInt32(dr["PhotosWeb"]);
+        eleve.PortableAutreParent = Convert.ToString(dr["PortableAutreParent"]);
+        eleve.PreInscrit = Convert.ToInt32(dr["PreInscrit"]);
+        eleve.PremiereRentree = Convert.ToDateTime(dr["PremiereRentree"]);
+        eleve.Prenom = Convert.ToString(dr["Prenom"]);
+        eleve.PrenomAutreParent = Convert.ToString(dr["PrenomAutreParent"]);
+        eleve.RelationAutreParent = Convert.ToString(dr["RelationAutreParent"]);
+        eleve.Sexe = Convert.ToString(dr["Sexe"]);
+
+        EleveList.Add(eleve);
+      }
+      dr.Close();
+      return EleveList;
     }
-    dr.Close();
-    return EleveList;
-
   }
 
   [DataObjectMethod(DataObjectMethodType.Insert)]
@@ -185,7 +209,7 @@ public static class EleveDataObject
   }
 
   [DataObjectMethod(DataObjectMethodType.Update)]
-  public static int UpdateEleve(Eleve contact)
+  public static int UpdateEleve(Eleve eleve)
   {
     string sqlstring = "UPDATE `eleves` SET `ContactID`=?vContactID, `Nom`=?vNom,`Prenom`=?vPrenom,`DateNaissance`=?vDateNaissance,`Nationalite`=?vNationalite,`PremiereRentree`=?vPremiereRentree,`ClasseActuelle`=?vClasseActuelle,`ActuellementInscrit`=?vActuellementInscrit,`PreInscrit`=?vPreInscrit,`Sexe`=?vSexe, " +
       "RelationAutreParent=?vRelationAutreParent, NomAutreParent=?vNomAutreParent, PrenomAutreParent=?vPrenomAutreParent, AdresseAutreParent=?vAdresseAutreParent, FixeAutreParent=?vFixeAutreParent, PortableAutreParent=?vPortableAutreParent, EmailAutreParent=?vEmailAutreParent, Docteur=?vDocteur, " +
@@ -194,31 +218,31 @@ public static class EleveDataObject
     using (MySqlCommand cmd = new MySqlCommand(sqlstring, new MySqlConnection(GetConnectionString())))
     {
 
-      cmd.Parameters.Add(new MySqlParameter("key", contact.Eleve_ID));
-      cmd.Parameters.Add(new MySqlParameter("vContactID", contact.ContactID));
-      cmd.Parameters.Add(new MySqlParameter("vNom", contact.Nom));
-      cmd.Parameters.Add(new MySqlParameter("vPrenom", contact.Prenom));
-      cmd.Parameters.Add(new MySqlParameter("vDateNaissance", (String.IsNullOrEmpty(contact.DateNaissance.ToString()) ? Convert.ToDateTime("01/01/0001") : Convert.ToDateTime(contact.DateNaissance))));
-      cmd.Parameters.Add(new MySqlParameter("vNationalite", contact.Nationalite));
-      cmd.Parameters.Add(new MySqlParameter("vPremiereRentree", contact.PremiereRentree));
+      cmd.Parameters.Add(new MySqlParameter("key", eleve.Eleve_ID));
+      cmd.Parameters.Add(new MySqlParameter("vContactID", eleve.ContactID));
+      cmd.Parameters.Add(new MySqlParameter("vNom", eleve.Nom));
+      cmd.Parameters.Add(new MySqlParameter("vPrenom", eleve.Prenom));
+      cmd.Parameters.Add(new MySqlParameter("vDateNaissance", (String.IsNullOrEmpty(eleve.DateNaissance.ToString()) ? Convert.ToDateTime("01/01/0001") : Convert.ToDateTime(eleve.DateNaissance))));
+      cmd.Parameters.Add(new MySqlParameter("vNationalite", eleve.Nationalite));
+      cmd.Parameters.Add(new MySqlParameter("vPremiereRentree", eleve.PremiereRentree));
       //cmd.Parameters.Add(new MySqlParameter("vNiveau", contact.Niveau));
-      cmd.Parameters.Add(new MySqlParameter("vClasseActuelle", contact.ClasseActuelle));
-      cmd.Parameters.Add(new MySqlParameter("vActuellementInscrit", Convert.ToInt32(contact.ActuellementInscrit)));
-      cmd.Parameters.Add(new MySqlParameter("vPreInscrit", Convert.ToInt32(contact.PreInscrit)));
-      cmd.Parameters.Add(new MySqlParameter("vSexe", contact.Sexe));
-      cmd.Parameters.Add(new MySqlParameter("vRelationAutreParent", contact.RelationAutreParent));
-      cmd.Parameters.Add(new MySqlParameter("vNomAutreParent", contact.NomAutreParent));
-      cmd.Parameters.Add(new MySqlParameter("vPrenomAutreParent", contact.PrenomAutreParent));
-      cmd.Parameters.Add(new MySqlParameter("vAdresseAutreParent", contact.AdresseAutreParent));
-      cmd.Parameters.Add(new MySqlParameter("vFixeAutreParent", contact.FixeAutreParent));
-      cmd.Parameters.Add(new MySqlParameter("vPortableAutreParent", contact.PortableAutreParent));
-      cmd.Parameters.Add(new MySqlParameter("vEmailAutreParent", contact.EmailAutreParent));
-      cmd.Parameters.Add(new MySqlParameter("vDocteur", contact.Docteur));
-      cmd.Parameters.Add(new MySqlParameter("vPhotosClasse", Convert.ToInt32(contact.PhotosClasse)));
-      cmd.Parameters.Add(new MySqlParameter("vPhotosWeb", Convert.ToInt32(contact.PhotosWeb)));
-      cmd.Parameters.Add(new MySqlParameter("vGateaux", Convert.ToInt32(contact.Gateaux)));
-      cmd.Parameters.Add(new MySqlParameter("vPbMedicaux", Convert.ToInt32(contact.PbMedicaux)));
-      cmd.Parameters.Add(new MySqlParameter("vDetailsMedicaux", contact.DetailsMedicaux));
+      cmd.Parameters.Add(new MySqlParameter("vClasseActuelle", eleve.ClasseActuelle));
+      cmd.Parameters.Add(new MySqlParameter("vActuellementInscrit", Convert.ToInt32(eleve.ActuellementInscrit)));
+      cmd.Parameters.Add(new MySqlParameter("vPreInscrit", Convert.ToInt32(eleve.PreInscrit)));
+      cmd.Parameters.Add(new MySqlParameter("vSexe", eleve.Sexe));
+      cmd.Parameters.Add(new MySqlParameter("vRelationAutreParent", eleve.RelationAutreParent));
+      cmd.Parameters.Add(new MySqlParameter("vNomAutreParent", eleve.NomAutreParent));
+      cmd.Parameters.Add(new MySqlParameter("vPrenomAutreParent", eleve.PrenomAutreParent));
+      cmd.Parameters.Add(new MySqlParameter("vAdresseAutreParent", eleve.AdresseAutreParent));
+      cmd.Parameters.Add(new MySqlParameter("vFixeAutreParent", eleve.FixeAutreParent));
+      cmd.Parameters.Add(new MySqlParameter("vPortableAutreParent", eleve.PortableAutreParent));
+      cmd.Parameters.Add(new MySqlParameter("vEmailAutreParent", eleve.EmailAutreParent));
+      cmd.Parameters.Add(new MySqlParameter("vDocteur", eleve.Docteur));
+      cmd.Parameters.Add(new MySqlParameter("vPhotosClasse", Convert.ToInt32(eleve.PhotosClasse)));
+      cmd.Parameters.Add(new MySqlParameter("vPhotosWeb", Convert.ToInt32(eleve.PhotosWeb)));
+      cmd.Parameters.Add(new MySqlParameter("vGateaux", Convert.ToInt32(eleve.Gateaux)));
+      cmd.Parameters.Add(new MySqlParameter("vPbMedicaux", Convert.ToInt32(eleve.PbMedicaux)));
+      cmd.Parameters.Add(new MySqlParameter("vDetailsMedicaux", eleve.DetailsMedicaux));
 
       cmd.Connection.Open();
       return cmd.ExecuteNonQuery();

@@ -1,19 +1,10 @@
 ﻿<%@ Page Title="La Marelle - Famille" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="FamilyForm.aspx.cs" Inherits="Admin_FamilyForm" %>
-
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
-
-
-
 <%@ Register src="FamilySearch.ascx" tagname="FamilySearch" tagprefix="uc1" %>
-<%--<%@ Register src="ContactsEditView.ascx" tagname="ContactsEditView" tagprefix="uc2" %>--%>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
-</asp:ToolkitScriptManager>
-
-
-
+  <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server"/>
 
   <uc1:FamilySearch ID="FamilySearch1" runat="server" />
 
